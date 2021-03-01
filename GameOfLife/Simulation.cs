@@ -12,7 +12,7 @@ namespace GameOfLife
         {
             if (IsZeroOrBelow(width) || IsZeroOrBelow(height))
             {
-                throw new ArgumentException("Impossible d'initialiser la grille  à zéro.");
+                throw new ArgumentException("Impossible d'initialiser la grille à zéro ou inférieur.");
             }
 
             actualState = new bool[width, height];
@@ -28,6 +28,11 @@ namespace GameOfLife
             if (IsZeroOrBelow(x) || IsZeroOrBelow(y))
             {
                 throw new ArgumentException("Impossible d'initialiser la cellule à zéro ou inférieur.");
+            }
+
+            if (x >= actualState.GetLength(0) && y >= actualState.GetLength(1))
+            {
+                throw new ArgumentException("Impossible d'initialiser la cellule hors de la grille.");
             }
         }
     }

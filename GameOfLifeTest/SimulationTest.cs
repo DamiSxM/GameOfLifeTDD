@@ -68,5 +68,17 @@ namespace GameOfLifeTest
             // Act & Assert
             Assert.Throws<ArgumentException>(() => sim.Add(x, y));
         }
+
+        [Fact]
+        public void Add_ArgsOutOfGrid_ShouldThrowException()
+        {
+            // Arrange
+            var sim = new Simulation(5, 5);
+            var x = 6;
+            var y = 6;
+
+            // Act & Assert
+            Assert.Throws<ArgumentException>(() => sim.Add(x, y));
+        }
     }
 }
