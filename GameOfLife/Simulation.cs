@@ -34,6 +34,8 @@ namespace GameOfLife
             {
                 throw new ArgumentException("Impossible d'initialiser la cellule hors de la grille.");
             }
+
+            actualState[x, y] = true;
         }
     }
 }

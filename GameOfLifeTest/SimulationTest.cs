@@ -80,5 +80,24 @@ namespace GameOfLifeTest
             // Act & Assert
             Assert.Throws<ArgumentException>(() => sim.Add(x, y));
         }
+
+        [Fact]
+        public void Add_ValidArgs_ShouldReturnValidBoolArray()
+        {
+            // Arrange
+            var sim = new Simulation(3, 3);
+
+            //Act
+            sim.Add(1, 1);
+            bool[,] actualGrid = sim.GetState();
+
+            // Assert
+            bool[,] expectedGrid = new bool[3, 3]{
+                { false, false, false },
+                { false, true, false },
+                { false, false, false },
+            };
+            Assert.Equal(actualGrid, expectedGrid);
+        }
     }
 }
