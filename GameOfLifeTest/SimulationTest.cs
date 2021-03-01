@@ -42,5 +42,19 @@ namespace GameOfLifeTest
             // Assert
             Assert.True(true);
         }
+
+        [Fact]
+        public void GetState_CallToGetTheGrid_ShouldReturnGridArray()
+        {
+            // Arrange
+            var sim = new Simulation(5, 5);
+
+            //Act
+            bool[,] actualGrid = sim.GetState();
+
+            // Assert
+            var expectedGrid = new bool[5, 5];
+            Assert.Equal(actualGrid, expectedGrid);
+        }
     }
 }

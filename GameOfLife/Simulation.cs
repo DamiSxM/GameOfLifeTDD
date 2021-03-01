@@ -4,13 +4,22 @@ namespace GameOfLife
 {
     public class Simulation
     {
+        bool[,] actualState;
+
         public Simulation(int width, int height)
         {
-            if (width <= 0 || height <= 0)
+            bool oneDimensionIsZero = width <= 0 || height <= 0;
+            if (oneDimensionIsZero)
             {
                 throw new ArgumentException("Impossible d'initialiser la grille  à zéro.");
             }
 
+            actualState = new bool[width, height];
+        }
+
+        public bool[,] GetState()
+        {
+            return actualState;
         }
     }
 }
