@@ -6,10 +6,11 @@ namespace GameOfLife
     {
         bool[,] actualState;
 
+        private bool IsZeroOrBelow(int value) => value <= 0;
+
         public Simulation(int width, int height)
         {
-            bool oneDimensionIsZero = width <= 0 || height <= 0;
-            if (oneDimensionIsZero)
+            if (IsZeroOrBelow(width) || IsZeroOrBelow(height))
             {
                 throw new ArgumentException("Impossible d'initialiser la grille  à zéro.");
             }
@@ -20,6 +21,14 @@ namespace GameOfLife
         public bool[,] GetState()
         {
             return actualState;
+        }
+
+        public void Add(int x, int y)
+        {
+            if (IsZeroOrBelow(x) || IsZeroOrBelow(y))
+            {
+                throw new ArgumentException("Impossible d'initialiser la cellule à zéro ou inférieur.");
+            }
         }
     }
 }

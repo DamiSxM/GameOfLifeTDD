@@ -56,5 +56,17 @@ namespace GameOfLifeTest
             var expectedGrid = new bool[5, 5];
             Assert.Equal(actualGrid, expectedGrid);
         }
+
+        [Fact]
+        public void Add_NegativeArgs_ShouldThrowException()
+        {
+            // Arrange
+            var sim = new Simulation(5, 5);
+            var x = -1;
+            var y = -1;
+
+            // Act & Assert
+            Assert.Throws<ArgumentException>(() => sim.Add(x, y));
+        }
     }
 }
