@@ -54,7 +54,7 @@ namespace GameOfLifeTest
 
             // Assert
             var expectedGrid = new bool[5, 5];
-            Assert.Equal(actualGrid, expectedGrid);
+            Assert.Equal(expectedGrid, actualGrid);
         }
 
         [Fact]
@@ -97,7 +97,74 @@ namespace GameOfLifeTest
                 { false, true, false },
                 { false, false, false },
             };
-            Assert.Equal(actualGrid, expectedGrid);
+            Assert.Equal(expectedGrid, actualGrid);
+        }
+
+        [Fact]
+        public void Functionnality_CallGetStateTwice_ShouldReturnValidBehavior()
+        {
+            // Arrange
+            var sim = new Simulation(3, 3);
+
+            //Act
+            sim.Add(1, 1);
+
+            bool[,] actualInitialGrid = sim.GetState();
+            bool[,] actualGrid = sim.GetState();
+
+            // Assert
+            bool[,] expectedGrid = new bool[3, 3];
+            Assert.Equal(expectedGrid, actualGrid);
+        }
+
+        [Fact]
+        public void Functionnality_CallGetStateTwice_TestBlock()
+        {
+            // Arrange
+            var sim = new Simulation(4, 4);
+
+            //Act
+            sim.Add(1, 1);
+            sim.Add(1, 2);
+            sim.Add(2, 1);
+            sim.Add(2, 2);
+
+            bool[,] actualInitialGrid = sim.GetState();
+            bool[,] actualGrid = sim.GetState();
+
+            // Assert
+            Assert.Equal(actualInitialGrid, actualGrid);
+        }
+
+
+        [Fact]
+        public void Functionnality_CallGetStateTwice_TestBlinkerk()
+        {
+            // Arrange
+            var sim = new Simulation(3, 3);
+
+            //Act
+            sim.Add(0, 1);
+            sim.Add(1, 1);
+            sim.Add(2, 1);
+
+            // - - -
+            // o o o
+            // - - -
+            bool[,] state1 = sim.GetState();
+
+            // - o -
+            // - o -
+            // - o -
+            bool[,] state2 = sim.GetState();
+
+            // - o -
+            // o - -
+            // o o -
+            bool[,] state3 = sim.GetState();
+
+            // Assert
+            Assert.Equal(state1, state3);
         }
     }
 }
