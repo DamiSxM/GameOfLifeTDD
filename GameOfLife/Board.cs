@@ -9,8 +9,8 @@ namespace GameOfLife
         public int Width { get { return grid.GetLength(0); } }
         public int Height { get { return grid.GetLength(1); } }
 
-        private bool IsPositionNegative(int x, int y) => x < 0 || y < 0;
-        private bool IsPositionOversized(int x, int y) => x >= Width && y >= Height;
+        private bool IsPositionNegative(Cell c) => c.X < 0 || c.Y < 0;
+        private bool IsPositionOversized(Cell c) => c.X >= Width && c.Y >= Height;
         private bool IsInvalidDimensions(int width, int height) => width <= 0 || height <= 0;
 
         public Board(int width, int height)
@@ -26,13 +26,13 @@ namespace GameOfLife
         /// Itérateur sur toutes les cellules de la grille
         /// </summary>
         /// <returns>Tuple contenant la position</returns>
-        internal IEnumerable<Tuple<int, int>> GetCells()
+        internal IEnumerable<Cell> GetCells()
         {
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    yield return new Tuple<int, int>(x,y);
+                    yield return new Cell(x, y);
                 }
             }
         }
@@ -40,21 +40,19 @@ namespace GameOfLife
         /// <summary>
         /// Retourne l'état de la cellule à cette position
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="current"></param>
         /// <returns></returns>
-        internal bool GetCellState(int x, int y)
+        internal bool IsAlive(Cell current)
         {
-            return grid[x, y];
+            return grid[current.X, current.Y];
         }
 
         /// <summary>
         /// Calcul le nombre de cellules vivantes autour de la position
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="current"></param>
         /// <returns>Nombre de cellules vivantes</returns>
-        internal int GetCellNeighborsNumber(int x, int y)
+        internal int GetNeighborsNumber(Cell current)
         {
             var number = 0;
 
@@ -62,14 +60,14 @@ namespace GameOfLife
             // si c'est le cas, on teste alors si elle est vivante
             // si c'est le cas, on ajoute un au nombre des voisins
 
-            number += GetNeighbor(x, y, NEIGHBOR.TOP_LEFT) ? 1 : 0;
-            number += GetNeighbor(x, y, NEIGHBOR.TOP_CENTER) ? 1 : 0;
-            number += GetNeighbor(x, y, NEIGHBOR.TOP_RIGHT) ? 1 : 0;
-            number += GetNeighbor(x, y, NEIGHBOR.MIDDLE_LEFT) ? 1 : 0;
-            number += GetNeighbor(x, y, NEIGHBOR.MIDDLE_RIGHT) ? 1 : 0;
-            number += GetNeighbor(x, y, NEIGHBOR.BOTTOM_LEFT) ? 1 : 0;
-            number += GetNeighbor(x, y, NEIGHBOR.BOTTOM_CENTER) ? 1 : 0;
-            number += GetNeighbor(x, y, NEIGHBOR.BOTTOM_RIGHT) ? 1 : 0;
+            number += GetNeighbor(current, NEIGHBOR.TOP_LEFT) ? 1 : 0;
+            number += GetNeighbor(current, NEIGHBOR.TOP_CENTER) ? 1 : 0;
+            number += GetNeighbor(current, NEIGHBOR.TOP_RIGHT) ? 1 : 0;
+            number += GetNeighbor(current, NEIGHBOR.MIDDLE_LEFT) ? 1 : 0;
+            number += GetNeighbor(current, NEIGHBOR.MIDDLE_RIGHT) ? 1 : 0;
+            number += GetNeighbor(current, NEIGHBOR.BOTTOM_LEFT) ? 1 : 0;
+            number += GetNeighbor(current, NEIGHBOR.BOTTOM_CENTER) ? 1 : 0;
+            number += GetNeighbor(current, NEIGHBOR.BOTTOM_RIGHT) ? 1 : 0;
 
             return number;
         }
@@ -90,47 +88,46 @@ namespace GameOfLife
         /// Retourne la valeur du voisin si elle existe
         /// sinon retourne false
         /// </summary>
-        /// <param name="currentX"></param>
-        /// <param name="currenty"></param>
+        /// <param name="current"></param>
         /// <param name="neighbor"></param>
         /// <returns></returns>
-        private bool GetNeighbor(int currentX, int currenty, NEIGHBOR neighbor)
+        private bool GetNeighbor(Cell current, NEIGHBOR neighbor)
         {
             bool isNeighborExist = false;
 
             switch (neighbor)
             {
                 case NEIGHBOR.TOP_LEFT:
-                    isNeighborExist = currentX > 0 && currenty > 0;
-                    return isNeighborExist && grid[currentX - 1, currenty - 1];
+                    isNeighborExist = current.X > 0 && current.Y > 0;
+                    return isNeighborExist && grid[current.X - 1, current.Y - 1];
 
                 case NEIGHBOR.TOP_CENTER:
-                    isNeighborExist = currenty > 0;
-                    return isNeighborExist && grid[currentX, currenty - 1];
+                    isNeighborExist = current.Y > 0;
+                    return isNeighborExist && grid[current.X, current.Y - 1];
 
                 case NEIGHBOR.TOP_RIGHT:
-                    isNeighborExist = currentX < Width - 1 && currenty > 0;
-                    return isNeighborExist && grid[currentX + 1, currenty - 1];
+                    isNeighborExist = current.X < Width - 1 && current.Y > 0;
+                    return isNeighborExist && grid[current.X + 1, current.Y - 1];
 
                 case NEIGHBOR.MIDDLE_LEFT:
-                    isNeighborExist = currentX > 0;
-                    return isNeighborExist && grid[currentX - 1, currenty];
+                    isNeighborExist = current.X > 0;
+                    return isNeighborExist && grid[current.X - 1, current.Y];
 
                 case NEIGHBOR.MIDDLE_RIGHT:
-                    isNeighborExist = currentX < Width - 1;
-                    return isNeighborExist && grid[currentX + 1, currenty];
+                    isNeighborExist = current.X < Width - 1;
+                    return isNeighborExist && grid[current.X + 1, current.Y];
 
                 case NEIGHBOR.BOTTOM_LEFT:
-                    isNeighborExist = currentX > 0 && currenty < Height - 1;
-                    return isNeighborExist && grid[currentX - 1, currenty + 1];
+                    isNeighborExist = current.X > 0 && current.Y < Height - 1;
+                    return isNeighborExist && grid[current.X - 1, current.Y + 1];
 
                 case NEIGHBOR.BOTTOM_CENTER:
-                    isNeighborExist = currenty < Height - 1;
-                    return isNeighborExist && grid[currentX, currenty + 1];
+                    isNeighborExist = current.Y < Height - 1;
+                    return isNeighborExist && grid[current.X, current.Y + 1];
 
                 case NEIGHBOR.BOTTOM_RIGHT:
-                    isNeighborExist = currentX < Width - 1 && currenty < Height - 1;
-                    return isNeighborExist && grid[currentX + 1, currenty + 1];
+                    isNeighborExist = current.X < Width - 1 && current.Y < Height - 1;
+                    return isNeighborExist && grid[current.X + 1, current.Y + 1];
             }
 
             return isNeighborExist;
@@ -139,21 +136,20 @@ namespace GameOfLife
         /// <summary>
         /// Active la cellule à cette position
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        internal void ActivateCell(int x, int y)
+        /// <param name="current"></param>
+        internal void Activate(Cell current)
         {
-            if (IsPositionNegative(x, y))
+            if (IsPositionNegative(current))
             {
                 throw new ArgumentException("Impossible d'initialiser la cellule à zéro ou inférieur.");
             }
 
-            if (IsPositionOversized(x, y))
+            if (IsPositionOversized(current))
             {
                 throw new ArgumentException("Impossible d'initialiser la cellule hors de la grille.");
             }
 
-            grid[x, y] = true;
+            grid[current.X, current.Y] = true;
         }
     }
 }

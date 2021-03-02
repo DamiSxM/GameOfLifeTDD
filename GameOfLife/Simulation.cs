@@ -43,9 +43,9 @@ namespace GameOfLife
         {
             var tmp = new bool[board.Width, board.Height];
 
-            foreach ((int x, int y) in board.GetCells())
+            foreach (var cell in board.GetCells())
             {
-                tmp[x, y] = ApplyRules(x, y);
+                tmp[cell.X, cell.Y] = ApplyRules(cell);
             }
 
             board.grid = tmp;
@@ -54,34 +54,33 @@ namespace GameOfLife
         /// <summary>
         /// Applique les règles de la simulation sur une cellule
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="current">Cellule courante</param>
         /// <returns>Etat de la cellule</returns>
-        private bool ApplyRules(int x, int y)
+        private bool ApplyRules(Cell current)
         {
-            var currentCell = board.GetCellState(x,y);
-            var neighborsCells = board.GetCellNeighborsNumber(x, y);
+            var isAlive = board.IsAlive(current);
+            var neighbors = board.GetNeighborsNumber(current);
 
             //Any live cell with fewer than two live neighbours dies, as if by loneliness.
-            if (currentCell && neighborsCells < 2)
+            if (isAlive && neighbors < 2)
             {
                 return false;
             }
 
             //Any live cell with more than three live neighbours dies, as if by overcrowding.
-            if (currentCell && neighborsCells > 3)
+            if (isAlive && neighbors > 3)
             {
                 return false;
             }
 
             //Any live cell with two or three live neighbours lives, unchanged, to the next generation.
-            if (currentCell && neighborsCells == 2 || neighborsCells == 3)
+            if (isAlive && neighbors == 2 || neighbors == 3)
             {
                 return true;
             }
 
             //Any dead cell with exactly three live neighbours comes to life.
-            if (!currentCell && neighborsCells == 3)
+            if (!isAlive && neighbors == 3)
             {
                 return true;
             }
@@ -96,7 +95,7 @@ namespace GameOfLife
         /// <param name="y"></param>
         public void Add(int x, int y)
         {
-            board.ActivateCell(x, y);
+            board.Activate(new Cell(x,y));
         }
     }
 }
