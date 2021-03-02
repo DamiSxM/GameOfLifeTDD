@@ -2,6 +2,7 @@ using System;
 using Xunit;
 
 using GameOfLife;
+using System.Linq;
 
 namespace GameOfLifeTest
 {
@@ -50,7 +51,7 @@ namespace GameOfLifeTest
             var sim = new Simulation(5, 5);
 
             //Act
-            bool[,] actualGrid = sim.GetState();
+            bool[,] actualGrid = sim.States.First();
 
             // Assert
             var expectedGrid = new bool[5, 5];
@@ -89,7 +90,7 @@ namespace GameOfLifeTest
 
             //Act
             sim.Add(1, 1);
-            bool[,] actualGrid = sim.GetState();
+            bool[,] actualGrid = sim.States.First();
 
             // Assert
             bool[,] expectedGrid = new bool[3, 3]{
@@ -109,8 +110,8 @@ namespace GameOfLifeTest
             //Act
             sim.Add(1, 1);
 
-            bool[,] actualInitialGrid = sim.GetState();
-            bool[,] actualGrid = sim.GetState();
+            bool[,] actualInitialGrid = sim.States.First();
+            bool[,] actualGrid = sim.States.First();
 
             // Assert
             bool[,] expectedGrid = new bool[3, 3];
@@ -129,8 +130,8 @@ namespace GameOfLifeTest
             sim.Add(2, 1);
             sim.Add(2, 2);
 
-            bool[,] actualInitialGrid = sim.GetState();
-            bool[,] actualGrid = sim.GetState();
+            bool[,] actualInitialGrid = sim.States.First();
+            bool[,] actualGrid = sim.States.First();
 
             // Assert
             Assert.Equal(actualInitialGrid, actualGrid);
@@ -151,17 +152,17 @@ namespace GameOfLifeTest
             // - - -
             // o o o
             // - - -
-            bool[,] state1 = sim.GetState();
+            bool[,] state1 = sim.States.First();
 
             // - o -
             // - o -
             // - o -
-            bool[,] state2 = sim.GetState();
+            bool[,] state2 = sim.States.First();
 
-            // - o -
-            // o - -
-            // o o -
-            bool[,] state3 = sim.GetState();
+            // - - -
+            // o o o
+            // - - -
+            bool[,] state3 = sim.States.First();
 
             // Assert
             Assert.Equal(state1, state3);

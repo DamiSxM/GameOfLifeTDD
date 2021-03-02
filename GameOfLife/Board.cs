@@ -5,9 +5,9 @@ namespace GameOfLife
 {
     public class Board
     {
-        public bool[,] grid;
-        public int Width { get { return grid.GetLength(0); } }
-        public int Height { get { return grid.GetLength(1); } }
+        public bool[,] Grid { get; set; }
+        public int Width { get { return Grid.GetLength(0); } }
+        public int Height { get { return Grid.GetLength(1); } }
 
         private bool IsPositionNegative(Cell c) => c.X < 0 || c.Y < 0;
         private bool IsPositionOversized(Cell c) => c.X >= Width && c.Y >= Height;
@@ -19,7 +19,7 @@ namespace GameOfLife
             {
                 throw new ArgumentException("Impossible d'initialiser la grille à zéro ou inférieur.");
             }
-            grid = new bool[width, height];
+            Grid = new bool[width, height];
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace GameOfLife
         /// <returns></returns>
         internal bool IsAlive(Cell current)
         {
-            return grid[current.X, current.Y];
+            return Grid[current.X, current.Y];
         }
 
         /// <summary>
@@ -102,35 +102,35 @@ namespace GameOfLife
             {
                 case NEIGHBOR.TOP_LEFT:
                     isNeighborExist = current.X > 0 && current.Y > 0;
-                    return isNeighborExist && grid[current.X - 1, current.Y - 1];
+                    return isNeighborExist && Grid[current.X - 1, current.Y - 1];
 
                 case NEIGHBOR.TOP_CENTER:
                     isNeighborExist = current.Y > 0;
-                    return isNeighborExist && grid[current.X, current.Y - 1];
+                    return isNeighborExist && Grid[current.X, current.Y - 1];
 
                 case NEIGHBOR.TOP_RIGHT:
                     isNeighborExist = current.X < Width - 1 && current.Y > 0;
-                    return isNeighborExist && grid[current.X + 1, current.Y - 1];
+                    return isNeighborExist && Grid[current.X + 1, current.Y - 1];
 
                 case NEIGHBOR.MIDDLE_LEFT:
                     isNeighborExist = current.X > 0;
-                    return isNeighborExist && grid[current.X - 1, current.Y];
+                    return isNeighborExist && Grid[current.X - 1, current.Y];
 
                 case NEIGHBOR.MIDDLE_RIGHT:
                     isNeighborExist = current.X < Width - 1;
-                    return isNeighborExist && grid[current.X + 1, current.Y];
+                    return isNeighborExist && Grid[current.X + 1, current.Y];
 
                 case NEIGHBOR.BOTTOM_LEFT:
                     isNeighborExist = current.X > 0 && current.Y < Height - 1;
-                    return isNeighborExist && grid[current.X - 1, current.Y + 1];
+                    return isNeighborExist && Grid[current.X - 1, current.Y + 1];
 
                 case NEIGHBOR.BOTTOM_CENTER:
                     isNeighborExist = current.Y < Height - 1;
-                    return isNeighborExist && grid[current.X, current.Y + 1];
+                    return isNeighborExist && Grid[current.X, current.Y + 1];
 
                 case NEIGHBOR.BOTTOM_RIGHT:
                     isNeighborExist = current.X < Width - 1 && current.Y < Height - 1;
-                    return isNeighborExist && grid[current.X + 1, current.Y + 1];
+                    return isNeighborExist && Grid[current.X + 1, current.Y + 1];
             }
 
             return isNeighborExist;
@@ -152,7 +152,7 @@ namespace GameOfLife
                 throw new ArgumentException("Impossible d'initialiser la cellule hors de la grille.");
             }
 
-            grid[current.X, current.Y] = true;
+            Grid[current.X, current.Y] = true;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GameOfLife
@@ -19,21 +20,26 @@ namespace GameOfLife
         }
 
         /// <summary>
-        /// Retourne l'état actuel de la simulation
+        /// Itérateur sur les états de la simulation
         /// </summary>
-        /// <returns>Etat de la simulation</returns>
-        public bool[,] GetState()
+        public IEnumerable<bool[,]> States
         {
-            if (initialSate)
+            get
             {
-                initialSate = false;
-            }
-            else
-            {
-                ProcessNewState();
-            }
+                while (true)
+                {
+                    if (initialSate)
+                    {
+                        initialSate = false;
+                    }
+                    else
+                    {
+                        ProcessNewState();
+                    }
 
-            return board.grid;
+                    yield return board.Grid;
+                }
+            }
         }
 
         /// <summary>
@@ -48,7 +54,7 @@ namespace GameOfLife
                 tmp[cell.X, cell.Y] = ApplyRules(cell);
             }
 
-            board.grid = tmp;
+            board.Grid = tmp;
         }
 
         /// <summary>

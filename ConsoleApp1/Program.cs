@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using GameOfLife;
 
@@ -17,10 +18,8 @@ namespace ConsoleApp1
             sim.Add(2, 1);
             sim.Add(1, 0);
 
-            for (int i = 0; i < 100; i++)
+            foreach (var state in sim.States)
             {
-                var state = sim.GetState();
-
                 for (int y = 0; y < sim.board.Height; y++)
                 {
                     string toto = "";
