@@ -22,6 +22,10 @@ namespace GameOfLife
             grid = new bool[width, height];
         }
 
+        /// <summary>
+        /// Itérateur sur toutes les cellules de la grille
+        /// </summary>
+        /// <returns>Tuple contenant la position</returns>
         internal IEnumerable<Tuple<int, int>> GetCells()
         {
             for (int x = 0; x < Width; x++)
@@ -33,11 +37,23 @@ namespace GameOfLife
             }
         }
 
+        /// <summary>
+        /// Retourne l'état de la cellule à cette position
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         internal bool GetCellState(int x, int y)
         {
             return grid[x, y];
         }
 
+        /// <summary>
+        /// Calcul le nombre de cellules vivantes autour de la position
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns>Nombre de cellules vivantes</returns>
         internal int GetCellNeighborsNumber(int x, int y)
         {
             var number = 0;            var isTopLeftExist = x > 0 && y > 0;            number += isTopLeftExist && grid[x - 1, y - 1] ? 1 : 0;            var isTopCenterExist = y > 0;            number += isTopCenterExist && grid[x, y - 1] ? 1 : 0;            var isTopRightExist = x < Width - 1 && y > 0;            number += isTopRightExist && grid[x + 1, y - 1] ? 1 : 0;            var isMiddleLeftExist = x > 0;            number += isMiddleLeftExist && grid[x - 1, y] ? 1 : 0;            var isMiddleRightExist = x < Width - 1;            number += isMiddleRightExist && grid[x + 1, y] ? 1 : 0;            var isBottomLeftExist = x > 0 && y < Height - 1;            number += isBottomLeftExist && grid[x - 1, y + 1] ? 1 : 0;            var isBottomCenterExist = y < Height - 1;            number += isBottomCenterExist && grid[x, y + 1] ? 1 : 0;            var isBottomRightExist = x < Width - 1 && y < Height - 1;            number += isBottomRightExist && grid[x + 1, y + 1] ? 1 : 0;
@@ -45,6 +61,11 @@ namespace GameOfLife
             return number;
         }
 
+        /// <summary>
+        /// Active la cellule à cette position
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         internal void ActivateCell(int x, int y)
         {
             if (IsPositionNegative(x, y))

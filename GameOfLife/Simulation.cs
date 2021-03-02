@@ -8,11 +8,20 @@ namespace GameOfLife
         private bool initialSate = true;
         public Board board;
 
+        /// <summary>
+        /// Création de la surface de simulation
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         public Simulation(int width, int height)
         {
             board = new Board(width, height);
         }
 
+        /// <summary>
+        /// Retourne l'état actuel de la simulation
+        /// </summary>
+        /// <returns>Etat de la simulation</returns>
         public bool[,] GetState()
         {
             if (initialSate)
@@ -27,6 +36,9 @@ namespace GameOfLife
             return board.grid;
         }
 
+        /// <summary>
+        /// Calcul le nouvel état de la simulation
+        /// </summary>
         private void ProcessNewState()
         {
             var tmp = new bool[board.Width, board.Height];
@@ -39,6 +51,12 @@ namespace GameOfLife
             board.grid = tmp;
         }
 
+        /// <summary>
+        /// Applique les règles de la simulation sur une cellule
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns>Etat de la cellule</returns>
         private bool ApplyRules(int x, int y)
         {
             var currentCell = board.GetCellState(x,y);
@@ -71,6 +89,11 @@ namespace GameOfLife
             return false;
         }
 
+        /// <summary>
+        /// Ajout d'une cellule vivante à cette position
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void Add(int x, int y)
         {
             board.ActivateCell(x, y);
