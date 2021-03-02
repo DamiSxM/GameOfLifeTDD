@@ -56,9 +56,84 @@ namespace GameOfLife
         /// <returns>Nombre de cellules vivantes</returns>
         internal int GetCellNeighborsNumber(int x, int y)
         {
-            var number = 0;            var isTopLeftExist = x > 0 && y > 0;            number += isTopLeftExist && grid[x - 1, y - 1] ? 1 : 0;            var isTopCenterExist = y > 0;            number += isTopCenterExist && grid[x, y - 1] ? 1 : 0;            var isTopRightExist = x < Width - 1 && y > 0;            number += isTopRightExist && grid[x + 1, y - 1] ? 1 : 0;            var isMiddleLeftExist = x > 0;            number += isMiddleLeftExist && grid[x - 1, y] ? 1 : 0;            var isMiddleRightExist = x < Width - 1;            number += isMiddleRightExist && grid[x + 1, y] ? 1 : 0;            var isBottomLeftExist = x > 0 && y < Height - 1;            number += isBottomLeftExist && grid[x - 1, y + 1] ? 1 : 0;            var isBottomCenterExist = y < Height - 1;            number += isBottomCenterExist && grid[x, y + 1] ? 1 : 0;            var isBottomRightExist = x < Width - 1 && y < Height - 1;            number += isBottomRightExist && grid[x + 1, y + 1] ? 1 : 0;
+            var number = 0;
+
+            // On va tester si la cellule existe,
+            // si c'est le cas, on teste alors si elle est vivante
+            // si c'est le cas, on ajoute un au nombre des voisins
+
+            number += GetNeighbor(x, y, NEIGHBOR.TOP_LEFT) ? 1 : 0;
+            number += GetNeighbor(x, y, NEIGHBOR.TOP_CENTER) ? 1 : 0;
+            number += GetNeighbor(x, y, NEIGHBOR.TOP_RIGHT) ? 1 : 0;
+            number += GetNeighbor(x, y, NEIGHBOR.MIDDLE_LEFT) ? 1 : 0;
+            number += GetNeighbor(x, y, NEIGHBOR.MIDDLE_RIGHT) ? 1 : 0;
+            number += GetNeighbor(x, y, NEIGHBOR.BOTTOM_LEFT) ? 1 : 0;
+            number += GetNeighbor(x, y, NEIGHBOR.BOTTOM_CENTER) ? 1 : 0;
+            number += GetNeighbor(x, y, NEIGHBOR.BOTTOM_RIGHT) ? 1 : 0;
 
             return number;
+        }
+
+        private enum NEIGHBOR
+        {
+            TOP_LEFT,
+            TOP_CENTER,
+            TOP_RIGHT,
+            MIDDLE_LEFT,
+            MIDDLE_RIGHT,
+            BOTTOM_LEFT,
+            BOTTOM_CENTER,
+            BOTTOM_RIGHT,
+        }
+
+        /// <summary>
+        /// Retourne la valeur du voisin si elle existe
+        /// sinon retourne false
+        /// </summary>
+        /// <param name="currentX"></param>
+        /// <param name="currenty"></param>
+        /// <param name="neighbor"></param>
+        /// <returns></returns>
+        private bool GetNeighbor(int currentX, int currenty, NEIGHBOR neighbor)
+        {
+            bool isNeighborExist = false;
+
+            switch (neighbor)
+            {
+                case NEIGHBOR.TOP_LEFT:
+                    isNeighborExist = currentX > 0 && currenty > 0;
+                    return isNeighborExist && grid[currentX - 1, currenty - 1];
+
+                case NEIGHBOR.TOP_CENTER:
+                    isNeighborExist = currenty > 0;
+                    return isNeighborExist && grid[currentX, currenty - 1];
+
+                case NEIGHBOR.TOP_RIGHT:
+                    isNeighborExist = currentX < Width - 1 && currenty > 0;
+                    return isNeighborExist && grid[currentX + 1, currenty - 1];
+
+                case NEIGHBOR.MIDDLE_LEFT:
+                    isNeighborExist = currentX > 0;
+                    return isNeighborExist && grid[currentX - 1, currenty];
+
+                case NEIGHBOR.MIDDLE_RIGHT:
+                    isNeighborExist = currentX < Width - 1;
+                    return isNeighborExist && grid[currentX + 1, currenty];
+
+                case NEIGHBOR.BOTTOM_LEFT:
+                    isNeighborExist = currentX > 0 && currenty < Height - 1;
+                    return isNeighborExist && grid[currentX - 1, currenty + 1];
+
+                case NEIGHBOR.BOTTOM_CENTER:
+                    isNeighborExist = currenty < Height - 1;
+                    return isNeighborExist && grid[currentX, currenty + 1];
+
+                case NEIGHBOR.BOTTOM_RIGHT:
+                    isNeighborExist = currentX < Width - 1 && currenty < Height - 1;
+                    return isNeighborExist && grid[currentX + 1, currenty + 1];
+            }
+
+            return isNeighborExist;
         }
 
         /// <summary>
