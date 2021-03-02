@@ -26,13 +26,16 @@ namespace GameOfLife
         /// Itérateur sur toutes les cellules de la grille
         /// </summary>
         /// <returns>Tuple contenant la position</returns>
-        internal IEnumerable<Cell> GetCells()
+        internal IEnumerable<Cell> Cells
         {
-            for (int x = 0; x < Width; x++)
+            get
             {
-                for (int y = 0; y < Height; y++)
+                for (int x = 0; x < Width; x++)
                 {
-                    yield return new Cell(x, y);
+                    for (int y = 0; y < Height; y++)
+                    {
+                        yield return new Cell(x, y);
+                    }
                 }
             }
         }

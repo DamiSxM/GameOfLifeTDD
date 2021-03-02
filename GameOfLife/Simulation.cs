@@ -43,7 +43,7 @@ namespace GameOfLife
         {
             var tmp = new bool[board.Width, board.Height];
 
-            foreach (var cell in board.GetCells())
+            foreach (var cell in board.Cells)
             {
                 tmp[cell.X, cell.Y] = ApplyRules(cell);
             }
