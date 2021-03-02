@@ -21,10 +21,10 @@ namespace ConsoleApp1
             {
                 var state = sim.GetState();
 
-                for (int y = 0; y < sim.Height; y++)
+                for (int y = 0; y < sim.board.Height; y++)
                 {
                     string toto = "";
-                    for (int x = 0; x < sim.Width; x++)
+                    for (int x = 0; x < sim.board.Width; x++)
                     {
                         if (state[x, y])
                         {
