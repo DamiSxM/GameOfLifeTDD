@@ -6,8 +6,11 @@ namespace GameOfLife
 {
     public class Simulation
     {
-        private bool initialSate = true;
-        public Board board;
+        private Board board;
+
+        public int Time { get; private set; }
+        public int Height { get { return board.Height; } }
+        public int Width { get { return board.Width; } }
 
         /// <summary>
         /// Création de la surface de simulation
@@ -17,6 +20,7 @@ namespace GameOfLife
         public Simulation(int width, int height)
         {
             board = new Board(width, height);
+            Time = 0;
         }
 
         /// <summary>
@@ -28,14 +32,12 @@ namespace GameOfLife
             {
                 while (true)
                 {
-                    if (initialSate)
-                    {
-                        initialSate = false;
-                    }
-                    else
+                    if (Time > 0)
                     {
                         ProcessNewState();
                     }
+
+                    Time++;
 
                     yield return board.Grid;
                 }

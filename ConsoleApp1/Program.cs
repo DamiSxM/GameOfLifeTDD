@@ -11,7 +11,9 @@ namespace ConsoleApp1
         {
             var sim = new Simulation(20, 20);
 
-            //Act
+            // - o -
+            // - - o
+            // o o o
             sim.Add(0, 2);
             sim.Add(1, 2);
             sim.Add(2, 2);
@@ -20,21 +22,18 @@ namespace ConsoleApp1
 
             foreach (var state in sim.States)
             {
-                for (int y = 0; y < sim.board.Height; y++)
+                Console.WriteLine("Temps: " + sim.Time);
+
+                for (int y = 0; y < sim.Height; y++)
                 {
-                    string toto = "";
-                    for (int x = 0; x < sim.board.Width; x++)
+                    string line = "";
+                    for (int x = 0; x < sim.Width; x++)
                     {
-                        if (state[x, y])
-                        {
-                            toto += "■ ";
-                        }
-                        else
-                        {
-                            toto += "  ";
-                        }
+                        line += (state[x, y])
+                            ? "■ "
+                            : "  ";
                     }
-                    Console.WriteLine(toto);
+                    Console.WriteLine(line);
                 }
                 Thread.Sleep(250);
                 Console.Clear();
