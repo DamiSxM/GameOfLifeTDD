@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Numerics;
 
 namespace GameOfLife
 {
@@ -8,7 +7,7 @@ namespace GameOfLife
     {
         private Board board;
 
-        public int Time { get; private set; }
+        public BigInteger Time { get; private set; }
         public int Height { get { return board.Height; } }
         public int Width { get { return board.Width; } }
 
